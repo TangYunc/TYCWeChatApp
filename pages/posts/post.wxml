@@ -11,7 +11,7 @@
   </swiper-item>
 </swiper>
 
-  <block wx:for='{{posts_key}}' wx:for-item='item' wx:for-index='index'>
+  <block wx:for='{{posts_key}}'>
     <view class='post-container'>
       <view class='post-author-date'>
         <image wx:if='{{item.img_condition}}' class='post-author' src='{{item.img.author_img}}'></image>
@@ -29,23 +29,6 @@
     </view>
   </block>
 
-  
-
-  <view class='post-container'>
-    <view class='post-author-date'>
-      <image class='post-author' src='/images/avatar/2.png'></image>
-      <text class='post-date'>Nov 19 2018</text>
-    </view>
-    <text class='post-title'>比例.林恩的中场故事</text>
-    <image class='post-image' src='/images/post/bl.png'></image>
-    <text class='post-content'>{{a + b}} 安慰别人时你说出的话都是真理 你像神一样告诫他要看开点 你一定觉得自己很了不起能看透这么多东西 可当事情发生在你头上你就完全不知道该怎么办了吧 那些真理在此时看来都他妈是狗屁 当时你觉得他小题大做经不起打击 等到同样的痛苦光临你的时候 你才明白到底有多痛 安慰别人的话对自己从来就没用</text>
-    <view class='post-like'>
-      <image class='post-like-image' src='../../images/icon/chat.png'></image>
-      <text class='post-like-font'>92</text>
-      <image class='post-like-image' src='../../images/icon/view.png'></image>
-      <text class='post-like-font'>65</text>
-    </view>
-  </view>
 </view>
 
 
