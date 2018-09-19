@@ -1,12 +1,11 @@
 Page({
-  onTap: function() {
-    // wx.navigateTo({
-    //   url: '../posts/post',
-    // })
-    wx.redirectTo({
-      url: '../posts/post',
-    })
+  onContainerTap: function(event) {
+    console.log('onContainerTap')
   },
+  onSubTap: function (event) {
+    console.log('onSubTap')
+  },
+
   onUnload:function(){
     console.log('welcome page is onUnload')
   },
