@@ -3,6 +3,6 @@
   <image class='user-avtar' src='/images/1.jpg'></image>
   <text class='user-name'> <text style='color:red'>hel \n lo</text> ,九月</text>
   <view class='moto-container' bindtap='onContainerTap'>
-    <text class='moto' bindtap='onSubTap'>开启小程序之旅</text>
+    <text class='moto' catchtap='onSubTap'>开启小程序之旅</text>
   </view>
 </view>
