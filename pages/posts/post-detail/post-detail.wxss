@@ -71,8 +71,8 @@
 }
 
 .circle-img image {
-  width: 64rpx;
-  height: 64rpx;
+  width: 90rpx;
+  height: 90rpx;
 }
 
 .share-img {
@@ -88,4 +88,13 @@
   top: 46rpx;
   margin: 0 auto;
   z-index: -99;
+}
+
+.detail {
+  color: #666;
+  margin-left: 30rpx;
+  margin-top: 20rpx;
+  margin-right: 30rpx;
+  line-height: 44rpx;
+  letter-spacing: 2px;
 }
