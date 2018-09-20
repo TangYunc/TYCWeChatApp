@@ -1,4 +1,4 @@
-<import src='post-item/post-item-template.wxml'/>
+<import src='post-item/post-item-template.wxml' />
 <!-- <import src='pages/posts/post-item/post-item-template.wxml'/> -->
 <view>
   <swiper vertical='{{false}}' indicator-dots='true' autoplay='true' interval='2000'>
@@ -15,7 +15,11 @@
 
   <block wx:for='{{posts_key}}'>
     <!-- template -->
-    <template is='postItem' data='{{item}}' />
+    <view>
+      <view catchtap='onPostTap' data-postid='{{item.postId}}'>
+        <template is='postItem' data='{{...item}}' />
+      </view>
+    </view>
   </block>
 
 </view>
