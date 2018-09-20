@@ -3,6 +3,7 @@ Page({
 
   onLoad: function(option) {
     var postId = option.id;
+    this.data.currentPostId = postId;
     var postData = postsData.postList[postId];
     // 如果在onLoad方法中，不是移不动去执行一个数据绑定
     // 则不需要使用this.setData方法
@@ -12,18 +13,36 @@ Page({
     })
     // this.data.postData = postData;
 
-    wx.setStorageSync('key', {game:'风暴英雄',developer:'暴雪'})
-    wx.setStorageSync('key1', { game: 'LOL', developer: '拳头' })
+    var postsCollected = wx.getStorageSync('posts_Collected')
+    if (postsCollected){
+      var postcollected = postsCollected[postId]
+      this.setData({
+        collected: postcollected
+      })
+    }else {
+      var postsCollected = {};
+      postsCollected[postId] = false
+      wx.setStorageSync('posts_Collected', postsCollected)
+    }
+    
+
   },
   onCollectionTap: function (event) {
-    var game = wx.getStorageSync('key')
-    console.log(game)
+    var postsCollected = wx.getStorageSync('posts_Collected')
+    var postCollected = postsCollected[this.data.currentPostId]
+    // 收藏变成为收藏，未收藏变成收藏
+    postCollected = !postCollected
+    postsCollected[this.data.currentPostId] = postCollected
+    // 更新文章是否的缓存值
+    wx.setStorageSync('posts_Collected', postsCollected)
+    // 更新数据绑定变量，从而实现切换图片
+    this.setData({
+      collected: postCollected
+    })
   },
 
   onShareTap:function(event) {
-    // wx.removeStorageSync('key')
-    //缓存的上限最大不能超过10MB
-    wx.clearStorageSync()
+    
   }
 
 })
