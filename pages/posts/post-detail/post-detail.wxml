@@ -2,6 +2,7 @@
 <!-- 先静后动，先样式再数据 -->
 <view class='container'>
   <image class='head-image' src='/images/post/sls.JPG'></image>
+  <image class='audio' src='/images/music/music-start.png'></image>
   <view class='author-date'>
     <image class='avatar' src='/images/avatar/2.png'></image>
     <text class='author'>胡歌</text>
