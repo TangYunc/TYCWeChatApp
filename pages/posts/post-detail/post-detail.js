@@ -39,6 +39,12 @@ Page({
     this.setData({
       collected: postCollected
     })
+    wx.showToast({
+      title: postCollected ? '收藏成功' : '取消收藏',
+      icon: 'success',
+      duration: 1000,
+      mask: true,
+    })
   },
 
   onShareTap:function(event) {
