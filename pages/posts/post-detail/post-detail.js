@@ -43,9 +43,6 @@ Page({
     // this.showModal(postCollected, postsCollected)
     
     this.showToast(postCollected, postsCollected)
-
-
-
   },
 
   showToast: function (postCollected, postsCollected) {
@@ -63,6 +60,8 @@ Page({
   },
 
   showModal: function (postCollected, postsCollected) {
+    //在success，fail，complete等函数中，this的指向对象改变了，所以需要在前面用一个变量来保存一下
+    //this是指代上下文环境
     var that = this
     wx.showModal({
       title: '收藏',
@@ -85,7 +84,25 @@ Page({
   },
 
   onShareTap:function(event) {
-    
+    var itemList = ['分享给好友', '分享到朋友圈', '分享到微博', '分享得QQ']
+    wx.showActionSheet({
+      itemList: itemList,
+      itemColor: '#405f00',
+      success: function(res) {
+        //res.tapIndex 数组元素的序号，从0开始
+        // res.cancel 用户点击了取消按钮
+        console.log('用户' + itemList[res.tapIndex])
+        console
+        wx.showModal({
+          title: '用户' + itemList[res.tapIndex],
+          content: '用户是否取消？' + res.cancel + '现在无法实现分享',
+          showCancel: true,
+          success: function(res) {},
+          fail: function(res) {},
+          complete: function(res) {},
+        })
+      }
+    })
   }
 
 })
