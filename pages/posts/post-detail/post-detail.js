@@ -14,20 +14,51 @@ Page({
     // this.data.postData = postData;
 
     var postsCollected = wx.getStorageSync('posts_Collected')
-    if (postsCollected){
+    if (postsCollected) {
       var postcollected = postsCollected[postId]
       this.setData({
         collected: postcollected
       })
-    }else {
+    } else {
       var postsCollected = {};
       postsCollected[postId] = false
       wx.setStorageSync('posts_Collected', postsCollected)
     }
-    
+
 
   },
-  onCollectionTap: function (event) {
+  onCollectionTap: function(event) {
+    // this.getPostsCollectedSync();
+    this.getPostsCollectedAsy()
+  },
+
+  getPostsCollectedAsy: function() {
+    var that = this
+    wx.getStorage({
+      key: 'posts_Collected',
+      success: function(res) {
+        var postsCollected = res.data
+        var postCollected = postsCollected[that.data.currentPostId]
+        // 收藏变成为收藏，未收藏变成收藏
+        postCollected = !postCollected
+        postsCollected[that.data.currentPostId] = postCollected
+        // 更新文章是否的缓存值
+        wx.setStorageSync('posts_Collected', postsCollected)
+        // 更新数据绑定变量，从而实现切换图片
+        that.setData({
+          collected: postCollected
+        })
+
+        // this.showModal(postCollected, postsCollected)
+
+        that.showToast(postCollected, postsCollected)
+      },
+      fail: function(res) {},
+      complete: function(res) {},
+    })
+  },
+
+  getPostsCollectedSync: function() {
     var postsCollected = wx.getStorageSync('posts_Collected')
     var postCollected = postsCollected[this.data.currentPostId]
     // 收藏变成为收藏，未收藏变成收藏
@@ -39,13 +70,15 @@ Page({
     this.setData({
       collected: postCollected
     })
-    
+
     // this.showModal(postCollected, postsCollected)
-    
+
     this.showToast(postCollected, postsCollected)
   },
 
-  showToast: function (postCollected, postsCollected) {
+
+
+  showToast: function(postCollected, postsCollected) {
     wx.setStorageSync('posts_Collected', postsCollected)
     // 更新数据绑定变量，从而实现切换图片
     this.setData({
@@ -59,7 +92,7 @@ Page({
     })
   },
 
-  showModal: function (postCollected, postsCollected) {
+  showModal: function(postCollected, postsCollected) {
     //在success，fail，complete等函数中，this的指向对象改变了，所以需要在前面用一个变量来保存一下
     //this是指代上下文环境
     var that = this
@@ -71,7 +104,7 @@ Page({
       cancelColor: '#333',
       confirmText: '确认',
       confirmColor: '#405f80',
-      success: function (res) {
+      success: function(res) {
         if (res.confirm) {
           wx.setStorageSync('posts_Collected', postsCollected)
           // 更新数据绑定变量，从而实现切换图片
@@ -83,7 +116,7 @@ Page({
     })
   },
 
-  onShareTap:function(event) {
+  onShareTap: function(event) {
     var itemList = ['分享给好友', '分享到朋友圈', '分享到微博', '分享得QQ']
     wx.showActionSheet({
       itemList: itemList,
