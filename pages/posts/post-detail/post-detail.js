@@ -1,6 +1,8 @@
 var postsData = require('../../../data/post-data.js')
 Page({
-
+  data: {
+    // isPlayingMusic = false
+  },
   onLoad: function(option) {
     var postId = option.id;
     this.data.currentPostId = postId;
@@ -28,8 +30,8 @@ Page({
 
   },
   onCollectionTap: function(event) {
-    // this.getPostsCollectedSync();
-    this.getPostsCollectedAsy()
+    this.getPostsCollectedSync();
+    // this.getPostsCollectedAsy()
   },
 
   getPostsCollectedAsy: function() {
@@ -136,6 +138,33 @@ Page({
         })
       }
     })
+  },
+
+  onMusicTap: function(event) {
+    const backgroundAudioManager = wx.getBackgroundAudioManager()
+    var currentPostId = this.data.currentPostId
+    var postData = postsData.postList[currentPostId]
+    var isPlayingMusic = this.data.isPlayingMusic
+    if (isPlayingMusic) {
+      backgroundAudioManager.pause
+      this.setData({
+        isPlayingMusic: false
+      })
+    } else {
+      backgroundAudioManager.play
+      backgroundAudioManager.title = postData.music.title
+      backgroundAudioManager.coverImgUrl = postData.music.coverImgUrl
+      // 设置了 src 之后会自动播放
+      backgroundAudioManager.src = postData.music.url
+      this.setData({
+        isPlayingMusic: true
+      })
+    }
+    
+
+
   }
+
+
 
 })
