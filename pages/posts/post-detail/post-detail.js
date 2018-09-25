@@ -28,7 +28,7 @@ Page({
       postsCollected[postId] = false
       wx.setStorageSync('posts_Collected', postsCollected)
     }
-    if (app.globalData.g_isPlayingMusic) {
+    if (app.globalData.g_isPlayingMusic && app.globalData.g_currentMusicPostId === postId) {
       this.setData({
         isPlayingMusic : true
       })
@@ -37,20 +37,21 @@ Page({
   },
 
   setMusicMonitor: function() {
-    var that = this;
+    var that = this
     const backgroundAudioManager = wx.getBackgroundAudioManager()
     backgroundAudioManager.onPause(() => {
       that.setData({
         isPlayingMusic: false
       })
       app.globalData.g_isPlayingMusic = false
-    })
-
+      app.globalData.g_currentMusicPostId = null
+    }),
     backgroundAudioManager.onPlay(() => {
       that.setData({
         isPlayingMusic: true
       })
       app.globalData.g_isPlayingMusic = true
+      app.globalData.g_currentMusicPostId = that.data.currentPostId
     })
   },
 
