@@ -1,10 +1,23 @@
+// Page({
+//   onContainerTap: function(event) {
+//     // wx.navigateTo({
+//     //   url: '../posts/post',
+//     // })
+//     wx.navigateTo({
+//       url: '../posts/post',
+//     })
+//   }
+// })
+
 Page({
-  onContainerTap: function(event) {
+  onContainerTap: function (event) {
     // wx.navigateTo({
-    //   url: '../posts/post',
-    // })
-    wx.redirectTo({
-      url: '../posts/post',
-    })
+    //     url:"../posts/post"
+    // });
+
+    wx.switchTab({
+      url: "../posts/post"
+    });
+
   }
 })
