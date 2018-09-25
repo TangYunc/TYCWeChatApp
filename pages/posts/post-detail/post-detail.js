@@ -1,9 +1,11 @@
 var postsData = require('../../../data/post-data.js')
+var app = getApp()
 Page({
   data: {
-    // isPlayingMusic = false
+    isPlayingMusic: false,
   },
   onLoad: function(option) {
+
     var postId = option.id;
     this.data.currentPostId = postId;
     var postData = postsData.postList[postId];
@@ -26,9 +28,32 @@ Page({
       postsCollected[postId] = false
       wx.setStorageSync('posts_Collected', postsCollected)
     }
-
-
+    if (app.globalData.g_isPlayingMusic) {
+      this.setData({
+        isPlayingMusic : true
+      })
+    }
+    this.setMusicMonitor()
   },
+
+  setMusicMonitor: function() {
+    var that = this;
+    const backgroundAudioManager = wx.getBackgroundAudioManager()
+    backgroundAudioManager.onPause(() => {
+      that.setData({
+        isPlayingMusic: false
+      })
+      app.globalData.g_isPlayingMusic = false
+    })
+
+    backgroundAudioManager.onPlay(() => {
+      that.setData({
+        isPlayingMusic: true
+      })
+      app.globalData.g_isPlayingMusic = true
+    })
+  },
+
   onCollectionTap: function(event) {
     this.getPostsCollectedSync();
     // this.getPostsCollectedAsy()
@@ -160,7 +185,7 @@ Page({
         isPlayingMusic: true
       })
     }
-    
+
 
 
   }
