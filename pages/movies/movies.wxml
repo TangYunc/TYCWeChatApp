@@ -1,6 +1,6 @@
 <import src='movie-list/movie-list-template.wxml' />
 <view class='moviesContainer'>
-  <view class='movies-template'>
+  <view class='movies-template' data='{{movies}}'>
     <template is='movieListTemplate' />
   </view>
   <view class='movies-template'>
