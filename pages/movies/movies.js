@@ -1,5 +1,10 @@
 var app = getApp()
 Page({
+  data:{
+    inTheaters: {},
+    comingSoon: {},
+    top250:{}
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -7,12 +12,12 @@ Page({
     var inTheatersUrl = app.globalData.doubanBase + 'v2/movie/in_theaters'
     var comingSoonUrl = app.globalData.doubanBase + 'v2.movie/coming_soon'
     var top250Url = app.globalData.doubanBase + 'v2/movie/top250'
-    this.getMovieListData(inTheatersUrl)
-    // this.getMovieListData(comingSoonUrl)
-    // this.getMovieListData(top250Url)
+    this.getMovieListData(inTheatersUrl,'inTheaters')
+    this.getMovieListData(comingSoonUrl,'comingSoon')
+    this.getMovieListData(top250Url,'top250')
   },
 
-  getMovieListData: function(url) {
+  getMovieListData: function(url,settedKey) {
     var that = this
     wx.request({
       url: url,
@@ -22,11 +27,11 @@ Page({
       },
       success(res) {
         // console.log(res.data)
-        that.processDoubanData(res.data)
+        that.processDoubanData(res.data, settedKey)
       }
     })
   },
-  processDoubanData: function(moviesDouban) {
+  processDoubanData: function (moviesDouban, settedKey) {
     var movies = [];
     for (var idx in moviesDouban.subjects) {
       var subject = moviesDouban.subjects[idx]
@@ -42,8 +47,8 @@ Page({
       }
       movies.push(temp)
     }
-    this.setData({
-      movies: movies
-    })
+    var readyData = {}
+    readyData[settedKey] = { movies: movies}
+    this.setData(readyData)
   },
 })
