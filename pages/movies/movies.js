@@ -4,13 +4,15 @@ Page({
   data: {
     inTheaters: {},
     comingSoon: {},
-    top250: {}
+    top250: {},
+    containerShow: true,
+    searchPanelShow: false
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    var inTheatersUrl = app.globalData.doubanBase + 'v2/movie/in_theaters' +'?start=0&count=3'
+    var inTheatersUrl = app.globalData.doubanBase + 'v2/movie/in_theaters' + '?start=0&count=3'
     var comingSoonUrl = app.globalData.doubanBase + 'v2.movie/coming_soon' + '?start=0&count=3'
     var top250Url = app.globalData.doubanBase + 'v2/movie/top250' + '?start=0&count=3'
     this.getMovieListData(inTheatersUrl, "inTheaters", "正在热映");
@@ -37,6 +39,20 @@ Page({
       }
     })
   },
+  onCancelImgTap: function(event) {
+    this.setData({
+      containerShow: true,
+      searchPanelShow: false,
+      searchResult: {}
+    })
+  },
+  onBindFocus: function(event) {
+    this.setData({
+      containerShow: false,
+      searchPanelShow: true
+    })
+  },
+
   processDoubanData: function(moviesDouban, settedKey, categoryTitle) {
     var movies = [];
     for (var idx in moviesDouban.subjects) {
