@@ -8,7 +8,10 @@ Page({
    */
   data: {
     movies: {},
-    navigateTitle: ''
+    navigateTitle: '',
+    requestUrl: '',
+    totalCount: 0,
+    isEmpty: true
   },
 
   /**
@@ -22,7 +25,7 @@ Page({
       case '正在热映':
         dataUrl = app.globalData.doubanBase +
           "/v2/movie/in_theaters"
-      break;
+        break;
       case '即将上映':
         dataUrl = app.globalData.doubanBase +
           "/v2/movie/coming_soon"
@@ -31,10 +34,28 @@ Page({
         dataUrl = app.globalData.doubanBase + "/v2/movie/top250"
         break;
     }
+    this.data.requestUrl = dataUrl
     util.http(dataUrl, this.callBack)
   },
 
-  processDoubanData: function (moviesDouban){
+  onScrollLower: function(event) {
+    var nextUrl = this.data.requestUrl +
+      "?start=" + this.data.totalCount + "&count=20";
+    util.http(nextUrl, this.processDoubanData)
+    wx.showNavigationBarLoading()
+  },
+
+  onPullDownRefresh: function(event) {
+    var refreshUrl = this.data.requestUrl +
+      "?star=0&count=20";
+    this.data.movies = {};
+    this.data.isEmpty = true;
+    this.data.totalCount = 0;
+    util.http(refreshUrl, this.processDoubanData);
+    wx.showNavigationBarLoading();
+  },
+
+  processDoubanData: function(moviesDouban) {
     var movies = [];
     for (var idx in moviesDouban.subjects) {
       var subject = moviesDouban.subjects[idx]
@@ -51,12 +72,22 @@ Page({
       }
       movies.push(temp)
     }
+    var totleMovies = {}
+    if (!this.data.isEmpty) {
+      totleMovies = this.data.movies.concat(movies)
+    } else {
+      totleMovies = movies;
+      this.data.isEmpty = false
+    }
     this.setData({
       movies: movies
     });
+    this.data.totalCount += 20
+    wx.hideNavigationBarLoading()
+    wx.stopPullDownRefresh()
   },
 
-  getMovieListData: function (url, settedKey, categoryTitle) {
+  getMovieListData: function(url, settedKey, categoryTitle) {
     var that = this
     wx.request({
       url: url,
