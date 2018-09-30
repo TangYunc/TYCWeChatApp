@@ -4,8 +4,7 @@ function convertToStarsArray(stars) {
   for (var i = 1; i <= 5; i++) {
     if (i <= num) {
       array.push(1);
-    }
-    else {
+    } else {
       array.push(0);
     }
   }
@@ -17,18 +16,40 @@ function http(url, callBack) {
     url: url,
     method: 'GET',
     header: {
-      'content-type': 'application/json' // 默认值
+      "Content-Type": "json"
     },
-    success: function (res) {
+    success: function(res) {
       callBack(res.data);
     },
-    fail: function (error) {
+    fail: function(error) {
       console.log(error)
     }
   })
 }
 
+function convertToCastString(casts) {
+  var castsjoin = "";
+  for (var idx in casts) {
+    castsjoin = castsjoin + casts[idx].name + " / ";
+  }
+  return castsjoin.substring(0, castsjoin.length - 2);
+}
+
+function convertToCastInfos(casts) {
+  var castsArray = []
+  for (var idx in casts) {
+    var cast = {
+      img: casts[idx].avatars ? casts[idx].avatars.large : "",
+      name: casts[idx].name
+    }
+    castsArray.push(cast);
+  }
+  return castsArray;
+}
+
 module.exports = {
   convertToStarsArray: convertToStarsArray,
-  http: http
+  http: http,
+  convertToCastString: convertToCastString,
+  convertToCastInfos: convertToCastInfos
 }

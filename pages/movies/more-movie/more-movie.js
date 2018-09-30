@@ -2,40 +2,35 @@
 var app = getApp()
 var util = require('../../../utils/util.js')
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     movies: {},
-    navigateTitle: '',
-    requestUrl: '',
+    navigateTitle: "",
+    requestUrl: "",
     totalCount: 0,
-    isEmpty: true
+    isEmpty: true,
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function(options) {
-    var category = options.category
-    this.data.navigateTitle = category
-    var dataUrl = ""
+    var category = options.category;
+    this.data.navigateTitle = category;
+    var dataUrl = "";
     switch (category) {
-      case '正在热映':
+      case "正在热映":
         dataUrl = app.globalData.doubanBase +
-          "/v2/movie/in_theaters"
+          "/v2/movie/in_theaters";
         break;
-      case '即将上映':
+      case "即将上映":
         dataUrl = app.globalData.doubanBase +
-          "/v2/movie/coming_soon"
+          "/v2/movie/coming_soon";
         break;
-      case '豆瓣Top250':
-        dataUrl = app.globalData.doubanBase + "/v2/movie/top250"
+      case "豆瓣Top250":
+        dataUrl = app.globalData.doubanBase + "/v2/movie/top250";
         break;
     }
-    this.data.requestUrl = dataUrl
-    util.http(dataUrl, this.callBack)
+    wx.setNavigationBarTitle({
+      title: this.data.navigateTitle
+    })
+    this.data.requestUrl = dataUrl;
+    util.http(dataUrl, this.processDoubanData)
   },
 
   onScrollLower: function(event) {
@@ -58,13 +53,14 @@ Page({
   processDoubanData: function(moviesDouban) {
     var movies = [];
     for (var idx in moviesDouban.subjects) {
-      var subject = moviesDouban.subjects[idx]
-      var title = subject.title
-      if (this.length >= 6) {
-        title = title.substring(0, 6) + '...'
+      var subject = moviesDouban.subjects[idx];
+      var title = subject.title;
+      if (title.length >= 6) {
+        title = title.substring(0, 6) + "...";
       }
+      // [1,1,1,1,1] [1,1,1,0,0]
       var temp = {
-        starts: util.convertToStarsArray(subject.rating.starts),
+        stars: util.convertToStarsArray(subject.rating.stars),
         title: title,
         average: subject.rating.average,
         coverageUrl: subject.images.large,
@@ -72,39 +68,34 @@ Page({
       }
       movies.push(temp)
     }
-    var totleMovies = {}
+    var totalMovies = {}
+
+    //如果要绑定新加载的数据，那么需要同旧有的数据合并在一起
     if (!this.data.isEmpty) {
-      totleMovies = this.data.movies.concat(movies)
+      totalMovies = this.data.movies.concat(movies);
     } else {
-      totleMovies = movies;
-      this.data.isEmpty = false
+      totalMovies = movies;
+      this.data.isEmpty = false;
     }
     this.setData({
-      movies: movies
+      movies: totalMovies
     });
-    this.data.totalCount += 20
-    wx.hideNavigationBarLoading()
+
+    this.data.totalCount += 20;
+    wx.hideNavigationBarLoading();
     wx.stopPullDownRefresh()
   },
 
-  getMovieListData: function(url, settedKey, categoryTitle) {
-    var that = this
-    wx.request({
-      url: url,
-      method: 'GET',
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success(res) {
-        // console.log(res.data)
-        that.processDoubanData(res.data, settedKey, categoryTitle)
-      }
+  onReady: function(event) {
+    wx.setNavigationBarTitle({
+      title: this.data.navigateTitle
     })
   },
 
-  onReady: function(options) {
-    wx.setNavigationBarTitle({
-      title: this.data.navigateTitle,
+  onMovieTap: function(event) {
+    var movieId = event.currentTarget.dataset.movieid;
+    wx.navigateTo({
+      url: '../movie-detail/movie-detail?id=' + movieId
     })
-  }
+  },
 })

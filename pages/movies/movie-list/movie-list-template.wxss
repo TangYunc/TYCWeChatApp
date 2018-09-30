@@ -1,6 +1,6 @@
-@import '../movie/movie-template.wxss';
+@import "../movie/movie-template.wxss";
 
-.movie-list-template-container {
+.movie-list-container {
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -12,9 +12,9 @@
 
 .movie-head {
   padding: 30rpx 20rpx 22rpx;
-  /* display: flex;
+  /*display:flex;
   flex-direction: row;
-  justify-content: space-between */
+  justify-content:space-between;*/
 }
 
 .slogan {

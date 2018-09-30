@@ -8,6 +8,10 @@
   height: 460rpx;
 }
 
+.hide {
+  opacity: 0;
+}
+
 .audio {
   width: 102rpx;
   height: 110rpx;
@@ -25,8 +29,8 @@
 }
 
 .avatar {
-  width: 64rpx;
   height: 64rpx;
+  width: 64rpx;
   vertical-align: middle;
 }
 
@@ -70,7 +74,7 @@
   vertical-align: middle;
 }
 
-.circle-img image {
+.circle-img Image {
   width: 90rpx;
   height: 90rpx;
 }
@@ -80,8 +84,8 @@
 }
 
 .horizon {
-  width: 660prx;
-  height: 2rpx;
+  width: 660rpx;
+  height: 1px;
   background-color: #e5e5e5;
   vertical-align: middle;
   position: relative;
